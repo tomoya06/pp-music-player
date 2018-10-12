@@ -1,11 +1,31 @@
 import { searchSongs, searchAlbums } from '@/services/browser.js'
 
+const baseSearchedSongs = {
+  xiami: {
+    songList: []
+  },
+  qq: {
+    songList: []
+  },
+  netease: {
+    songList: []
+  }
+}
+
 const state = {
-  searchedSongs: [],
+  searchedSongs: baseSearchedSongs,
+  searchFilters: {
+    xiami: true,
+    netease: true,
+    qq: true
+  },
   searchedAlbums: []
 }
 
 const mutations = {
+  _reset_searched_songs (state) {
+    state.searchedSongs = baseSearchedSongs
+  },
   _update_searched_songs (state, { songs }) {
     state.searchedSongs = songs
   },
@@ -16,8 +36,11 @@ const mutations = {
 
 const actions = {
   searchSongsAction ({ commit }, { key, page }) {
-    const songs = searchSongs(key, page)
-    commit('_update_searched_songs', { songs })
+    searchSongs(key, page)
+      .then((songs) => {
+        commit('_update_searched_songs', { songs })
+      })
+      .catch((error) => { })
   },
   searchAlbumsAction ({ commit }, { key, page }) {
     // TODO: change to the exact albums

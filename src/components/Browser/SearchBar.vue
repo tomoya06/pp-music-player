@@ -27,6 +27,7 @@ export default {
   methods: {
     launchSearch () {
       console.log(`Search keyword ${this.searchKey} for ${this.searchType}...`)
+      this.$store.commit('browser/_reset_searched_songs');
       switch (this.searchType) {
         case _searchTypes[0]:
           this.$store.dispatch('browser/searchSongsAction', {
