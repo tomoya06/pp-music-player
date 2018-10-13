@@ -14,7 +14,7 @@ const baseSearchedSongs = {
 
 const state = {
   searchedSongs: baseSearchedSongs,
-  searchFilters: {
+  searchSources: {
     xiami: true,
     netease: true,
     qq: true
@@ -23,26 +23,33 @@ const state = {
 }
 
 const mutations = {
-  _reset_searched_songs (state) {
+  _reset_searched_songs(state) {
     state.searchedSongs = baseSearchedSongs
   },
-  _update_searched_songs (state, { songs }) {
+  _update_searched_songs(state, { songs }) {
     state.searchedSongs = songs
   },
-  _update_searched_album (state, { albums }) {
+  _update_searched_album(state, { albums }) {
     state.searchedAlbums = albums
+  },
+  _update_search_sources(state, { selectedSources }) {
+    state.searchSources = {
+      xiami: selectedSources.includes('xiami'),
+      netease: selectedSources.includes('netease'),
+      qq: selectedSources.includes('qq'),
+    }
   }
 }
 
 const actions = {
-  searchSongsAction ({ commit }, { key, page }) {
+  searchSongsAction({ commit }, { key, page }) {
     searchSongs(key, page)
       .then((songs) => {
         commit('_update_searched_songs', { songs })
       })
       .catch((error) => { })
   },
-  searchAlbumsAction ({ commit }, { key, page }) {
+  searchAlbumsAction({ commit }, { key, page }) {
     // TODO: change to the exact albums
     commit('_update_searched_album', { albums: [] })
   }

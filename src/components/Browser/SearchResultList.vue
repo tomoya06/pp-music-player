@@ -1,6 +1,6 @@
 <template>
   <div class="search-result-list">
-    <div v-if="filters.xiami && xiamiSongs">
+    <div v-if="sources.xiami && xiamiSongs">
       <div class="setion-title">xiami</div>
       <song-item 
         v-for="song in xiamiSongs"
@@ -9,7 +9,7 @@
         :source="'xiami'"
       ></song-item>
     </div>
-    <div v-if="filters.netease">
+    <div v-if="sources.netease">
       <div class="setion-title">netease</div>
       <song-item 
         v-for="song in neteaseSongs"
@@ -18,7 +18,7 @@
         :source="'netease'"
       ></song-item>
     </div>
-    <div v-if="filters.qq">
+    <div v-if="sources.qq">
       <div class="setion-title">qq</div>
       <song-item 
         v-for="song in qqSongs"
@@ -39,7 +39,7 @@ export default {
   name: "search-result-list",
   computed: {
     ...mapState({
-      filters: state => state.browser.searchFilters,
+      sources: state => state.browser.searchSources,
       qqSongs: state => state.browser.searchedSongs.qq.songList,
       xiamiSongs: state => state.browser.searchedSongs.xiami.songList,
       neteaseSongs: state => state.browser.searchedSongs.netease.songList,

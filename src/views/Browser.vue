@@ -1,5 +1,5 @@
 <template>
-  <div class="browser">
+  <div>
     <search-bar></search-bar>
     <search-result-list></search-result-list>
   </div>
