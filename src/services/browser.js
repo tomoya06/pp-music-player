@@ -6,9 +6,9 @@ const limit = 20
 const all = 'xiami'
 const raw = true
 
-export const searchSongs = function (key, page) {
+export const searchSongs = function (source, key, page) {
   return new Promise((resolve, reject) => {
-    fetch(`${host}/api/search/song/all?key=${key}&page=${page}&limit=${limit}`)
+    fetch(`${host}/api/search/song/${source}?key=${key}&page=${page}&limit=${limit}`)
       .then((response) => response.json())
       .then((json) => { console.log(json); return resolve(json) })
       .catch((error) => { console.warn(error); return reject(error) })

@@ -15,12 +15,10 @@
         </v-flex>
         <v-flex xs12 md3 sm6 px-1>
           <v-select
-            v-model="selectedSources"
+            v-model="selectedSource"
             :items="sources"
             attach
-            multiple
             label="Search From..."
-            @change="updateSources"
           ></v-select>
         </v-flex>
         <v-flex xs12 md3 sm6 px-1>
@@ -35,7 +33,7 @@
   </v-container>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 const _searchTypes = ["Songs", "Albums"];
 
@@ -47,30 +45,48 @@ export default {
       searchTypes: _searchTypes,
       searchType: _searchTypes[0],
       keywordRules: [v => !!v || "Keyword is required"],
-      sources: ["xiami", "netease", "qq"],
-      selectedSources: ["xiami", "netease", "qq"]
+      sources: ["xiami", "netease", "qq"]
     };
+  },
+  computed: {
+    selectedSource: {
+      get: function() {
+        return this.$store.state.browser.selectedSource;
+      },
+      set: function(newValue) {
+        this.$store.commit("browser/_update_search_source", {
+          selectedSource: newValue
+        })
+        this.launchSearch()
+      }
+    }
   },
   methods: {
     switchType(index) {
       this.searchType = this.searchTypes[index];
     },
-    updateSources() {
-      console.log(this.selectedSources);
-      this.$store.commit("browser/_update_search_sources", {
-        selectedSources: this.selectedSources
-      });
-    },
+    // updateSources() {
+    //   console.log(this.selectedSources);
+    //   this.$store.commit("browser/_update_search_sources", {
+    //     selectedSources: this.selectedSources
+    //   });
+    // },
     launchSearch() {
       if (!this.$refs.form.validate()) {
         return;
       }
 
-      console.log(`Search keyword ${this.searchKey} for ${this.searchType}...`);
-      this.$store.commit("browser/_reset_searched_songs");
+      console.log(
+        `Search keyword ${this.searchKey} for ${this.searchType} from ${
+          this.selectedSource
+        }...`
+      );
+      // this.$store.commit("browser/_reset_searched_songs");
+
       switch (this.searchType) {
         case _searchTypes[0]:
           this.$store.dispatch("browser/searchSongsAction", {
+            source: this.selectedSource,
             key: this.searchKey,
             page: 1
           });

@@ -1,21 +1,24 @@
 <template>
-<v-list-tile>
-  <v-list-tile-action>
-    <v-btn icon @click="playSong">
-      <v-icon color="indigo">play_arrow</v-icon>
-    </v-btn>
-  </v-list-tile-action>
-  <v-list-tile-content>
-    <v-list-tile-title>{{ name }}</v-list-tile-title>
-    <v-list-tile-sub-title class="text--primary">{{ artists }}</v-list-tile-sub-title>
-    <v-list-tile-sub-title>{{ album }}</v-list-tile-sub-title>
-  </v-list-tile-content>
-  <v-list-tile-action>
-    <v-btn icon @click="markSong">
-      <v-icon>star</v-icon>
-    </v-btn>
-  </v-list-tile-action>
-</v-list-tile>
+<div>
+  <v-list-tile>
+    <v-list-tile-action>
+      <v-btn icon @click="playSong">
+        <v-icon color="indigo">play_arrow</v-icon>
+      </v-btn>
+    </v-list-tile-action>
+    <v-list-tile-content>
+      <v-list-tile-title>{{ name }}</v-list-tile-title>
+      <v-list-tile-sub-title class="text--primary">{{ artists }}</v-list-tile-sub-title>
+      <v-list-tile-sub-title>{{ album }}</v-list-tile-sub-title>
+    </v-list-tile-content>
+    <v-list-tile-action>
+      <v-btn icon @click="markSong">
+        <v-icon>star</v-icon>
+      </v-btn>
+    </v-list-tile-action>
+  </v-list-tile>
+  <v-divider></v-divider>
+</div>
 </template>
 <script>
 export default {

@@ -12,34 +12,52 @@ const baseSearchedSongs = {
   }
 }
 
+const baseSearchSources = ['netease', 'xiami', 'qq']
+
 const state = {
-  searchedSongs: baseSearchedSongs,
-  searchSources: ['xiami', 'netease', 'qq'],
-  searchedAlbums: []
+  searchSources: baseSearchedSongs,
+  selectedSource: baseSearchedSongs[0],
+  searchedSongs: [],
+  searchedAlbums: [],
+  isSearching: false,
+  isSearchError: false,
 }
 
 const mutations = {
   _reset_searched_songs(state) {
-    state.searchedSongs = baseSearchedSongs
+    state.isSearching = true
+    state.isSearchError = false
+    state.searchedSongs = []
   },
   _update_searched_songs(state, { songs }) {
     state.searchedSongs = songs
+    state.isSearchError = false
+    state.isSearching = false
+  },
+  _update_searched_songs_error(state, { error }) {
+    state.searchedSongs = []
+    state.isSearchError = true
+    state.isSearching = false
   },
   _update_searched_album(state, { albums }) {
     state.searchedAlbums = albums
   },
-  _update_search_sources(state, { selectedSources }) {
-    state.searchSources = selectedSources
+  _update_search_source(state, { selectedSource }) {
+    state.selectedSource = selectedSource
   }
 }
 
 const actions = {
-  searchSongsAction({ commit }, { key, page }) {
-    searchSongs(key, page)
-      .then((songs) => {
-        commit('_update_searched_songs', { songs })
+  searchSongsAction({ commit }, { source, key, page }) {
+    // commit('_update_search_source', { selectedSource: source })
+    commit('_reset_searched_songs')
+    searchSongs(source, key, page)
+      .then((json) => {
+        commit('_update_searched_songs', { songs: json.songList })
       })
-      .catch((error) => { })
+      .catch((error) => {
+        commit('_update_searched_songs_error', { error })
+      })
   },
   searchAlbumsAction({ commit }, { key, page }) {
     // TODO: change to the exact albums
