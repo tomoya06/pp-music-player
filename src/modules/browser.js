@@ -14,11 +14,7 @@ const baseSearchedSongs = {
 
 const state = {
   searchedSongs: baseSearchedSongs,
-  searchSources: {
-    xiami: true,
-    netease: true,
-    qq: true
-  },
+  searchSources: ['xiami', 'netease', 'qq'],
   searchedAlbums: []
 }
 
@@ -33,11 +29,7 @@ const mutations = {
     state.searchedAlbums = albums
   },
   _update_search_sources(state, { selectedSources }) {
-    state.searchSources = {
-      xiami: selectedSources.includes('xiami'),
-      netease: selectedSources.includes('netease'),
-      qq: selectedSources.includes('qq'),
-    }
+    state.searchSources = selectedSources
   }
 }
 

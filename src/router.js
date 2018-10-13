@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/',
       name: 'browser',
-      component: browser
+      component: browser,
     },
     {
       path: '/collection',

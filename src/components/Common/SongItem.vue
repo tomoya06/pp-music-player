@@ -1,29 +1,21 @@
 <template>
-<v-layout>
-  <v-flex xs2>
-    <v-card>
-      <v-img
-        src="coverURL"
-        aspect-ratio="1.0"
-      ></v-img>
-      <v-card-title>
-        <div>
-          <h3>{{ name }}</h3>
-        </div>
-      </v-card-title>
-      <v-card-text>
-        <div>
-          <h5>{{ artists }}</h5>
-          <h5>{{ album }}</h5>
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn icon @click="playSong"><v-icon>play</v-icon></v-btn>
-        <v-btn icon @click="markSong"><v-icon>add</v-icon></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-flex>
-</v-layout>
+<v-list-tile>
+  <v-list-tile-action>
+    <v-btn icon @click="playSong">
+      <v-icon color="indigo">play_arrow</v-icon>
+    </v-btn>
+  </v-list-tile-action>
+  <v-list-tile-content>
+    <v-list-tile-title>{{ name }}</v-list-tile-title>
+    <v-list-tile-sub-title class="text--primary">{{ artists }}</v-list-tile-sub-title>
+    <v-list-tile-sub-title>{{ album }}</v-list-tile-sub-title>
+  </v-list-tile-content>
+  <v-list-tile-action>
+    <v-btn icon @click="markSong">
+      <v-icon>star</v-icon>
+    </v-btn>
+  </v-list-tile-action>
+</v-list-tile>
 </template>
 <script>
 export default {
