@@ -1,6 +1,9 @@
 <template>
-<div>
-  <v-list-tile>
+<v-hover>
+  <v-list-tile
+    slot-scope="{hover}"
+    :class="`elevation-${hover?18:0}`"
+  >
     <v-list-tile-action>
       <v-btn icon @click="playSong">
         <v-icon color="indigo">play_arrow</v-icon>
@@ -18,7 +21,7 @@
     </v-list-tile-action>
   </v-list-tile>
   <v-divider></v-divider>
-</div>
+</v-hover>
 </template>
 <script>
 export default {

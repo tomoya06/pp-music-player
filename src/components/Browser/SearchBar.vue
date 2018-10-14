@@ -16,14 +16,14 @@
         <v-flex xs12 md3 sm6 px-1>
           <v-select
             v-model="selectedSource"
-            :items="sources"
+            :items="searchSources"
             attach
             label="Search From..."
           ></v-select>
         </v-flex>
         <v-flex xs12 md3 sm6 px-1>
           <v-select
-            v-model="searchType"
+            v-model="selectedType"
             :items="searchTypes"
             label="Filter"
           ></v-select>
@@ -35,20 +35,30 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-const _searchTypes = ["Songs", "Albums"];
-
 export default {
   name: "search-bar",
   data() {
     return {
       searchKey: "",
-      searchTypes: _searchTypes,
-      searchType: _searchTypes[0],
-      keywordRules: [v => !!v || "Keyword is required"],
-      sources: ["xiami", "netease", "qq"]
+      keywordRules: [v => !!v || "Keyword is required"]
     };
   },
   computed: {
+    ...mapState({
+      searchTypes: state => state.browser.searchTypes,
+      searchSources: state => state.browser.searchSources
+    }),
+    selectedType: {
+      get: function() {
+        return this.$store.state.browser.selectedType;
+      },
+      set: function(newValue) {
+        this.$store.commit("browser/_update_search_type", {
+          selectedType: newValue
+        });
+        this.launchSearch();
+      }
+    },
     selectedSource: {
       get: function() {
         return this.$store.state.browser.selectedSource;
@@ -56,8 +66,8 @@ export default {
       set: function(newValue) {
         this.$store.commit("browser/_update_search_source", {
           selectedSource: newValue
-        })
-        this.launchSearch()
+        });
+        this.launchSearch();
       }
     }
   },
@@ -65,33 +75,32 @@ export default {
     switchType(index) {
       this.searchType = this.searchTypes[index];
     },
-    // updateSources() {
-    //   console.log(this.selectedSources);
-    //   this.$store.commit("browser/_update_search_sources", {
-    //     selectedSources: this.selectedSources
-    //   });
-    // },
+
     launchSearch() {
       if (!this.$refs.form.validate()) {
         return;
       }
 
       console.log(
-        `Search keyword ${this.searchKey} for ${this.searchType} from ${
+        `Search keyword ${this.searchKey} for ${this.selectedType} from ${
           this.selectedSource
         }...`
       );
-      // this.$store.commit("browser/_reset_searched_songs");
 
-      switch (this.searchType) {
-        case _searchTypes[0]:
+      switch (this.selectedType) {
+        case this.searchTypes[0]:
           this.$store.dispatch("browser/searchSongsAction", {
             source: this.selectedSource,
             key: this.searchKey,
             page: 1
           });
           break;
-        case _searchTypes[1]:
+        case this.searchTypes[1]:
+          this.$store.dispatch("browser/searchAlbumsAction", {
+            source: this.selectedSource,
+            key: this.searchKey,
+            page: 1
+          })
           break;
         default:
           break;
