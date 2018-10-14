@@ -12,6 +12,7 @@
 			<v-card-text primary-title>
 				<h3 class="singleLine">{{ name }}</h3>
 				<div class="singleLine">{{ artists }}</div>
+				<div class="singleLine grey--text">{{ `${year} / ${size}` }}</div>
 			</v-card-text>
 			<v-card-actions>
 				<v-btn icon><v-icon>add</v-icon></v-btn>
@@ -32,10 +33,6 @@
 				type: Object,
 				required: true,
 			},
-			source: {
-				type: String,
-				required: true,
-			}
 		},
 
 		computed: {
@@ -49,7 +46,8 @@
 				return this.$props.album.picUrl 
 			},
 			size: function() {
-				return this.$props.album.size
+				const _size = this.$props.album.size
+				return `${_size} ${_size>1?'songs':'song'}`
 			},
 			type: function() {
 				return this.$props.album.type 

@@ -17,7 +17,9 @@
           <v-select
           v-model="selectedType"
           :items="searchTypes"
+          item-text="display"
           label="Filter"
+          return-object
           ></v-select>
         </v-flex>
       </v-layout>
@@ -62,7 +64,7 @@
           return;
         }
 
-        console.log(`Search keyword ${this.searchKey} for ${this.selectedType}...`)
+        console.log(`Search keyword ${this.searchKey} for ${this.selectedType.text}...`)
 
         this.$store.dispatch('browser/searchAction', {
           type: this.selectedType,

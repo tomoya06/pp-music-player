@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import browser from '@/views/Browser.vue'
 import collection from '@/views/Collection.vue'
+import setting from '@/views/Setting.vue'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/collection',
       name: 'collection',
       component: collection
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: setting
     }
   ]
 })

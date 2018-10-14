@@ -3,3 +3,10 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
+  .multiline {
+  	display: -webkit-box;
+  	-webkit-box-orient: vertical;
+  	-webkit-line-clamp: 3;
+  	overflow: hidden;
+  }

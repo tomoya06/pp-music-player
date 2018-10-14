@@ -48,6 +48,10 @@
     icon: "home",
     to: "/collection",
     title: "Collection"
+  }, {
+    icon: "settings",
+    to: "/setting",
+    title: "Setting"
   }
   ];
 

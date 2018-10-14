@@ -10,8 +10,7 @@
       </v-btn>
     </v-list-tile-action>
     <v-list-tile-content>
-      <v-list-tile-title>{{ name }}</v-list-tile-title>
-      <v-list-tile-sub-title>{{ alias }}</v-list-tile-sub-title>
+      <v-list-tile-title>{{ name }}<span class="grey--text">{{ alias }}</span></v-list-tile-title>
       <v-list-tile-sub-title class="text--primary">{{ artists }}</v-list-tile-sub-title>
       <v-list-tile-sub-title>{{ album }}</v-list-tile-sub-title>
     </v-list-tile-content>
@@ -42,7 +41,7 @@ export default {
     },
     alias: function() {
       const _alias = this.$props.song.alias 
-      return (_alias instanceof Array && _alias.length > 0) ? ` / ${_alias.join(' / ')}`: ''
+      return (_alias instanceof Array && _alias.length > 0) ? ` / ${_alias.join('/')}`: ''
     },
     artists: function() {
       return this.$props.song.artists

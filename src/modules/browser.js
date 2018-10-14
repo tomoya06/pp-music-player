@@ -1,6 +1,25 @@
 import { searchService } from '@/services/browser.js'
 
-const baseSearchTypes = ['song', 'album', 'artist', 'playlist']
+const baseSearchTypes = [{
+    display: 'Songs',
+    text: 'song',
+    value: 1,
+  }, {
+    display: 'Albums',
+    text: 'album',
+    value: 10,
+  }, {
+    display: 'Artists',
+    text: 'artist',
+    value: 100,
+  }, {
+    display: 'Playlists',
+    text: 'playlist',
+    value: 1000,
+  }
+]
+
+const defaultHost = 'http://localhost:3000'
 
 const state = {
   searchTypes: baseSearchTypes,
@@ -13,15 +32,23 @@ const state = {
   },
   isSearching: false,
   isSearchError: false,
-  currentError: ''
+  currentError: '',
+  currentResourcesCount: 0,
+
+  host: defaultHost,
+  turnOnZeroSnackbar: false,
 }
 
 const mutations = {
+  _update_host(state, {host}) {
+    state.host = host 
+    console.log(state.host)
+  },
   _update_search_type(state, { selectedType }) {
     state.selectedType = selectedType
   },
   _launch_search_resource(state, {type}) {
-    state.searchedResources[type] = []
+    state.searchedResources[type.text] = []
     state.isSearching = true 
     state.isSearchError = false 
     state.currentError = ''
@@ -35,14 +62,21 @@ const mutations = {
     state.isSearching = false
     state.isSearchError = false 
     state.currentError = '' 
-    state.searchedResources[type] = resources
+    state.searchedResources[type.text] = resources
+
+    state.turnOnZeroSnackbar = true
+    state.currentResourcesCount = resources.length
+  },
+  _turn_off_zero_snackbar(state) {
+    state.turnOnZeroSnackbar = false
   }
 }
 
 const actions = {
-  searchAction({commit}, {type, key, page, limit}) {
+  searchAction({state, commit}, {type, key, page, limit}) {
     commit('_launch_search_resource', {type})
-    searchService(type, key, page, limit)
+    // console.log(state.host)
+    searchService(state.host, type, key, page, limit)
       .then((json) => {
         commit('_finish_search_resource_success', {
           type,
@@ -56,8 +90,11 @@ const actions = {
 }
 
 function digestJson(_json, _type) {
-  const _result = _json.result[`${_type}s`]
-  console.log(_json, _result);
+  if (_json.result[`${_type.text}Count`] === 0) {
+    return []
+  }
+  const _result = _json.result[`${_type.text}s`]
+  // console.log(_json, _result);
   return _result
 }
 
