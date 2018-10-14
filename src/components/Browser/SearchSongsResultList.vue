@@ -8,7 +8,6 @@
             v-for="song in searchedSongs"
             :song="song"
             :key="song.id"
-            :source="selectedSource"
             ></song-item>
           </v-list>
           <loading v-else-if="!isSearchError"></loading>
@@ -31,13 +30,14 @@
     name: "search-songs-result-list",
     computed: {
       ...mapState({
-        selectedSource: state => state.browser.selectedSource,
-        searchedSongs: state => state.browser.searchedSongs,
+        searchedSongs: state => state.browser.searchedResources['song'],
         isSearching: state => state.browser.isSearching,
+        isSearchError: state => state.browser.isSearchError,
+        currentError: state => state.browser.currentError,
       // qqSongs: state => state.browser.searchedSongs.qq.songList,
       // xiamiSongs: state => state.browser.searchedSongs.xiami.songList,
       // neteaseSongs: state => state.browser.searchedSongs.netease.songList,
-    })
+      })
     },
     components: {
       SongItem,

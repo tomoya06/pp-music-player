@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<v-layout row wrap>
-			<v-flex xs12 sm10 md8>
+			<v-flex xs12 sm8>
 				<v-card>
 					<v-container 
 					v-if="!isSearching"
@@ -11,7 +11,6 @@
 						<album-item
 						v-for="album in searchedAlbums"
 						:album="album"
-						:source="selectedSource"
 						></album-item>
 					</v-layout>		
 				</v-container>
@@ -36,11 +35,11 @@
 
 		computed: {
 			...mapState({
-				searchedAlbums: state => state.browser.searchedAlbums,
-				selectedSource: state => state.browser.selectedSource,
+				searchedAlbums: state => state.browser.searchedResources['album'],
+				// selectedSource: state => state.browser.selectedSource,
 				isSearching: state => state.browser.isSearching,
 				isSearchError: state => state.browser.isSearchError,
-				// currentError: state => state.browser.currentError,
+				currentError: state => state.browser.currentError,
 			}),
 			currentError: {
 				get: function() {

@@ -1,5 +1,5 @@
 <template>
-	<v-flex xs4 pa-1>
+	<v-flex xs6 sm4 pa-1>
 		<v-hover>
 			<v-card
 				slot-scope="{hover}"
@@ -46,7 +46,16 @@
 				return this.$props.album.artist.name
 			},
 			coverURL: function() {
-				return this.$props.album.cover 
+				return this.$props.album.picUrl 
+			},
+			size: function() {
+				return this.$props.album.size
+			},
+			type: function() {
+				return this.$props.album.type 
+			},
+			year: function() {
+				return (new Date(this.$props.album.publishTime)).getFullYear()
 			}
 		}
 	}

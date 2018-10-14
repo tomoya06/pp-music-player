@@ -1,85 +1,64 @@
-import { searchSongs, searchAlbums } from '@/services/browser.js'
+import { searchService } from '@/services/browser.js'
 
-const baseSearchSources = ['netease', 'xiami', 'qq']
-const baseSearchTypes = ['song', 'album']
+const baseSearchTypes = ['song', 'album', 'artist', 'playlist']
 
 const state = {
-  searchSources: baseSearchSources,
-  selectedSource: baseSearchSources[0],
   searchTypes: baseSearchTypes,
   selectedType: baseSearchTypes[0],
-  searchedSongs: [],
-  searchedAlbums: [],
+  searchedResources: {
+    song: [],
+    album: [],
+    artist: [],
+    playlist: [],
+  },
   isSearching: false,
   isSearchError: false,
   currentError: ''
 }
 
 const mutations = {
-  _reset_searched_songs(state) {
-    state.isSearching = true
-    state.isSearchError = false
-    state.currentError = ''
-    state.searchedSongs = []
-  },
-  _reset_searched_albums(state) {
-    state.isSearching = true
-    state.isSearchError = false
-    state.currentError = ''
-    state.searchedAlbums = [] 
-  },
-  _update_searched_songs(state, { songs }) {
-    state.searchedSongs = songs
-    state.isSearchError = false
-    state.isSearching = false
-  },
-  _update_searched_album(state, { albums }) {
-    state.searchedAlbums = albums
-    state.isSearchError = false
-    state.isSearching = false
-  },
-  _update_searched_songs_error(state, { error }) {
-    state.searchedSongs = []
-    state.isSearchError = true
-    state.isSearching = false
-    state.currentError = error 
-  },
-  _update_searched_albums_error(state, { error }) {
-    state.searchedAlbums = []
-    state.isSearchError = true
-    state.isSearching = false  
-    state.currentError = error 
-  },
-  _update_search_source(state, { selectedSource }) {
-    state.selectedSource = selectedSource
-  },
   _update_search_type(state, { selectedType }) {
     state.selectedType = selectedType
+  },
+  _launch_search_resource(state, {type}) {
+    state.searchedResources[type] = []
+    state.isSearching = true 
+    state.isSearchError = false 
+    state.currentError = ''
+  },
+  _finish_search_resource_error(state, {error}) {
+    state.isSearching = false
+    state.isSearchError = true 
+    state.currentError = error 
+  },
+  _finish_search_resource_success(state, {type, resources}) {
+    state.isSearching = false
+    state.isSearchError = false 
+    state.currentError = '' 
+    state.searchedResources[type] = resources
   }
 }
 
 const actions = {
-  searchSongsAction({ commit }, { source, key, page }) {
-    commit('_reset_searched_songs')
-    searchSongs(source, key, page)
+  searchAction({commit}, {type, key, page, limit}) {
+    commit('_launch_search_resource', {type})
+    searchService(type, key, page, limit)
       .then((json) => {
-        commit('_update_searched_songs', { songs: json.songList })
+        commit('_finish_search_resource_success', {
+          type,
+          resources: digestJson(json, type) 
+        })
       })
       .catch((error) => {
-        commit('_update_searched_songs_error', { error })
-      })
-  },
-  searchAlbumsAction({ commit }, { source, key, page }) {
-    // TODO: change to the exact albums    
-    commit('_reset_searched_albums')
-    searchAlbums(source, key, page)
-      .then((json) => {
-        commit('_update_searched_album', { albums: json.albumList })
-      })
-      .catch((error) => {
-        commit('_update_searched_albums_error', { error })
+        commit('_finish_search_resource_error', {error})
       })
   }
+}
+
+function digestJson(_json, _type) {
+  const _result = _json.result[`${_type}s`]
+  console.log(_json, _result);
+  return _result
 }
 
 export default {

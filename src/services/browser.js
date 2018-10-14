@@ -1,31 +1,29 @@
-import musicAPI from 'music-api'
+const host = 'http://localhost:3000'
 
-const host = 'http://localhost:8001'
+function convertTypeNumber(_type) {
+  switch (_type) {
+    case 'song': return 1;
+    case 'album': return 10;
+    case 'artist': return 100;
+    case 'playlist': return 1000;
+  }
+}
 
-const limit = 20
-const raw = true
-
-function musicPromise(type, source, key, page) {
+export const searchService = function(type, key, page, limit = 20) {
+  const typeNo = convertTypeNumber(type)
   return new Promise((resolve, reject) => {
-    fetch(`${host}/api/search/${type}/${source}?key=${key}&page=${page}&limit=${limit}`)
+    fetch(`${host}/search?keywords=${key}&limit=${limit}&offset=${page}&type=${typeNo}`)
     .then((response) => response.json())
     .then((json) => { 
       console.log(json); 
-      if (!json.success) {
-        throw new Error(`[musicapi] ${json.message}`)
+      if (json.code !== 200) {
+        throw new Error(`[musicapi] ${json.result}`)
       }
       return resolve(json);
-     })
+    })
     .catch((error) => { 
+      console.warn(error)
       return reject(error.message)
     })
   })
-}
-
-export const searchSongs = function (source, key, page) {
-  return musicPromise('song', source, key, page)
-}
-
-export const searchAlbums = function (source, key, page) {
-  return musicPromise('album', source, key, page)
 }

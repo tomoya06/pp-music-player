@@ -11,6 +11,7 @@
     </v-list-tile-action>
     <v-list-tile-content>
       <v-list-tile-title>{{ name }}</v-list-tile-title>
+      <v-list-tile-sub-title>{{ alias }}</v-list-tile-sub-title>
       <v-list-tile-sub-title class="text--primary">{{ artists }}</v-list-tile-sub-title>
       <v-list-tile-sub-title>{{ album }}</v-list-tile-sub-title>
     </v-list-tile-content>
@@ -30,33 +31,37 @@ export default {
       type: Object,
       required: true
     },
-    source: {
-      type: String,
-      required: true
-    }
+    // source: {
+    //   type: String,
+    //   required: true
+    // }
   },
   computed: {
     name: function() {
       return this.$props.song.name;
     },
+    alias: function() {
+      const _alias = this.$props.song.alias 
+      return (_alias instanceof Array && _alias.length > 0) ? ` / ${_alias.join(' / ')}`: ''
+    },
     artists: function() {
       return this.$props.song.artists
-        .map((artist, index) => artist.name)
+        .map((artist) => artist.name)
         .join(", ");
     },
     album: function() {
       return this.$props.song.album.name;
     },
-    coverURL: function() {
-      return this.$props.song.album.cover;
-    },
-    needPay: function() {
-      return this.$props.song.needPay;
-    }
+    // coverURL: function() {
+    //   return this.$props.song.album.cover;
+    // },
+    // needPay: function() {
+    //   return this.$props.song.needPay;
+    // }
   },
   methods: {
     markSong: function() {
-      console.log(`Mark ${this.name} from ${this.$props.source}...`);
+      console.log(`Mark ${this.name}...`);
     },
     playSong: function() {
       console.log(`Play ${this.name}...`);
