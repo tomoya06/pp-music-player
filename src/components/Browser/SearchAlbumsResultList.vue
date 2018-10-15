@@ -1,7 +1,5 @@
 <template>
-<v-container
-	grid-list-xs fluid
-	>
+<v-container grid-list-xs fluid>
 	<v-layout row wrap>
 		<album-item
 		v-for="album in searchedAlbums"
