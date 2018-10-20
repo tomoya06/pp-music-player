@@ -1,6 +1,6 @@
 <template>
   <div class="text-xs-center" >
-    <v-progress-circular indeterminate color='white'></v-progress-circular>
+    <v-progress-circular indeterminate color='indigo'></v-progress-circular>
   </div>
 </template>
 <style>

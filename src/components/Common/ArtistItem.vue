@@ -16,8 +16,11 @@
 				<div class="singleLine grey--text">{{ albumSize }}</div>
 			</v-card-text>
 			<v-card-actions>
-				<v-btn icon><v-icon>add</v-icon></v-btn>
 				<v-btn icon><v-icon>star</v-icon></v-btn>
+        <v-spacer></v-spacer>
+        <router-link :to="routerTo">
+          <v-btn icon><v-icon>keyboard_arrow_right</v-icon></v-btn>
+        </router-link>
 			</v-card-actions>
 		</v-card>
 	</v-hover>
@@ -43,8 +46,11 @@ export default {
   },
 
   computed: {
+    artistId: function() {
+      return this.$props.artist.id 
+    },
   	avatarURL: function() {
-  		return this.$props.artist.img1v1Url
+  		return this.$props.artist.picUrl
   	},
     name: function() {
     	return this.$props.artist.name
@@ -64,6 +70,11 @@ export default {
     		_alias += _artist.trans
     	}
     	return _alias
+    },
+    routerTo: function() {
+      return {
+        path: `/details/artist/${this.artistId}`
+      }
     }
   }
 }

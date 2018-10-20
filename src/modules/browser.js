@@ -1,29 +1,32 @@
 import { searchService } from '@/services/browser.js'
 
-const baseSearchTypes = [{
+const baseSearchTypes = [
+  {
     display: 'Songs',
     text: 'song',
     value: 1,
-  }, {
+  }, 
+  {
     display: 'Albums',
     text: 'album',
     value: 10,
-  }, {
+  },
+  {
     display: 'Artists',
     text: 'artist',
     value: 100,
-  }, {
-    display: 'Playlists',
-    text: 'playlist',
-    value: 1000,
-  }
+  }, 
+  // {
+  //   display: 'Playlists',
+  //   text: 'playlist',
+  //   value: 1000,
+  // }
 ]
-
-const defaultHost = 'http://localhost:3000'
 
 const state = {
   searchTypes: baseSearchTypes,
   selectedType: baseSearchTypes[0],
+
   searchedResources: {
     song: [],
     album: [],
@@ -35,15 +38,12 @@ const state = {
   currentError: '',
   currentResourcesCount: 0,
 
-  host: defaultHost,
+  currentKeyword: '',
+
   turnOnZeroSnackbar: false,
 }
 
 const mutations = {
-  _update_host(state, {host}) {
-    state.host = host 
-    console.log(state.host)
-  },
   _update_search_type(state, { selectedType }) {
     state.selectedType = selectedType
   },
@@ -69,14 +69,20 @@ const mutations = {
   },
   _turn_off_zero_snackbar(state) {
     state.turnOnZeroSnackbar = false
+  },
+  _update_current_keyword(state, {keyword}) {
+    state.currentKeyword = keyword;
   }
 }
 
 const actions = {
-  searchAction({state, commit}, {type, key, page, limit}) {
+  searchAction({state, commit, rootGetters, rootState}, {type, page, limit}) {
     commit('_launch_search_resource', {type})
     // console.log(state.host)
-    searchService(state.host, type, key, page, limit)
+    const _host = rootGetters.urlHost;
+    const key = state.currentKeyword;
+
+    searchService(_host, type, key, page, limit)
       .then((json) => {
         commit('_finish_search_resource_success', {
           type,

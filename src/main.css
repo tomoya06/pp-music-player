@@ -10,3 +10,16 @@
   	-webkit-line-clamp: 3;
   	overflow: hidden;
   }
+
+  a, a:-webkit-any-link {
+    text-decoration: none;
+  }
+
+  .opacity1 {
+    opacity: 1 !important;
+  }
+
+  .opacityTrans {
+    opacity: 0;
+    transition: opacity linear .5s;
+  }

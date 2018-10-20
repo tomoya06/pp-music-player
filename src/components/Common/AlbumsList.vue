@@ -2,7 +2,7 @@
 <v-container grid-list-xs fluid>
 	<v-layout row wrap>
 		<album-item
-		v-for="album in searchedAlbums"
+		v-for="album in albums"
 		:album="album"
 		:key="album.id"
 		></album-item>
@@ -16,14 +16,21 @@
 	import AlbumItem from '@/components/Common/AlbumItem.vue'
 
 	export default {
-		name: 'search-albums-result-list',
+		name: 'albums-list',
 
-		computed: {
-			...mapState({
-				searchedAlbums: state => state.browser.searchedResources['album'],				
-			}),
-			
+		props: {
+			albums: {
+				type: Array,
+				required: true,
+			}
 		},
+
+		// computed: {
+		// 	...mapState({
+		// 		searchedAlbums: state => state.browser.searchedResources['album'],				
+		// 	}),
+			
+		// },
 
 		components: {
 			AlbumItem,

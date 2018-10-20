@@ -30,12 +30,11 @@ export default {
       type: Object,
       required: true
     },
-    // source: {
-    //   type: String,
-    //   required: true
-    // }
   },
   computed: {
+    id: function() {
+      return this.$props.song.id;
+    },
     name: function() {
       return this.$props.song.name;
     },
@@ -44,19 +43,13 @@ export default {
       return (_alias instanceof Array && _alias.length > 0) ? ` / ${_alias.join('/')}`: ''
     },
     artists: function() {
-      return this.$props.song.artists
-        .map((artist) => artist.name)
-        .join(", ");
+      const artists = this.$props.song.artists || this.$props.song.ar || []
+      return artists.map((artist) => artist.name).join(", ");
     },
     album: function() {
-      return this.$props.song.album.name;
+      const album = this.$props.song.album || this.$props.song.al || {name: ''}
+      return album.name;
     },
-    // coverURL: function() {
-    //   return this.$props.song.album.cover;
-    // },
-    // needPay: function() {
-    //   return this.$props.song.needPay;
-    // }
   },
   methods: {
     markSong: function() {

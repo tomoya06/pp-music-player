@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-container grid-list-sm>
     <v-form ref="form" lazy-validation>
       <v-layout row wrap>
-        <v-flex xs12 sm9 px-1>
+        <v-flex xs12 sm9>
           <v-text-field
           v-model="searchKey"
           label="Search Keyword"
@@ -13,7 +13,7 @@
           @keyup.enter="launchSearch"
           ></v-text-field>
         </v-flex>
-        <v-flex xs12 sm3 px-1>
+        <v-flex xs12 sm3>
           <v-select
           v-model="selectedType"
           :items="searchTypes"
@@ -33,7 +33,6 @@
     name: "search-bar",
     data() {
       return {
-        searchKey: "",
         keywordRules: [v => !!v || "Keyword is required"]
       };
     },
@@ -52,23 +51,25 @@
           this.launchSearch();
         }
       },
+      searchKey: {
+        get: function() {
+          return this.$store.state.browser.currentKeyword;
+        },
+        set: function(newValue) {
+          this.$store.commit("browser/_update_current_keyword", {keyword: newValue})
+        }
+      },
     },
 
     methods: {
-      // switchType(index) {
-      //   this.searchType = this.searchTypes[index];
-      // },
-
+      
       launchSearch() {
         if (!this.$refs.form.validate()) {
           return;
         }
 
-        console.log(`Search keyword ${this.searchKey} for ${this.selectedType.text}...`)
-
         this.$store.dispatch('browser/searchAction', {
           type: this.selectedType,
-          key: this.searchKey,
           page: 0,
           limit: 20
         })

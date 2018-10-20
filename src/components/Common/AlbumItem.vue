@@ -15,8 +15,11 @@
 				<div class="singleLine grey--text">{{ `${year} / ${size}` }}</div>
 			</v-card-text>
 			<v-card-actions>
-				<v-btn icon><v-icon>add</v-icon></v-btn>
 				<v-btn icon><v-icon>star</v-icon></v-btn>
+				<v-spacer></v-spacer>
+				<router-link :to="routerTo">
+					<v-btn icon><v-icon>keyboard_arrow_right</v-icon></v-btn>
+				</router-link>
 			</v-card-actions>
 		</v-card>
 	</v-hover>
@@ -36,6 +39,11 @@
 		},
 
 		computed: {
+			routerTo: function() {
+				return {
+					path: '/details/album/'+this.$props.album.id
+				}
+			},
 			name: function() {
 				return this.$props.album.name 
 			},

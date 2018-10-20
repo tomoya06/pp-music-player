@@ -1,5 +1,6 @@
 <template>
-  <v-app dark>
+  <v-app :dark="isDarkTheme">
+    <!-- Router Drawer -->
     <v-navigation-drawer fixed clipped app v-model="drawer">
       <v-list>
         <v-list-tile
@@ -16,10 +17,16 @@
       </v-list-tile>
     </v-list>
   </v-navigation-drawer>
-  <v-toolbar app fixed clipped-left>
+  <!-- Top Toolbar -->
+  <v-toolbar app fixed clipped-left :color="toolbarColor">
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    <v-toolbar-title>Music Player</v-toolbar-title>
-  </v-toolbar>
+    <router-link :to="{path: '/'}">
+      <v-btn flat>
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+      </v-btn>
+    </router-link>
+    </v-toolbar>
+  <!-- Main Content -->
   <v-content>
     <v-container fluid>
       <v-fade-transition mode="out-in">
@@ -27,21 +34,28 @@
       </v-fade-transition>
     </v-container>
   </v-content>
+  <!-- Bottom Footer -->
   <v-footer>
-    <!-- <player-bar></player-bar> -->
-    <h4>This will be the player bar</h4>
+    <v-spacer></v-spacer>
+    <div class="grey--text caption">Powered By Vue-Cli</div>
   </v-footer>
 </v-app>
 </template>
 
 <script>
   import '@/main.css'
-  import PlayerBar from "@/components/PlayerBar.vue";
+  import { mapState } from 'vuex'
+  // import PlayerBar from "@/components/PlayerBar.vue";
 
   const routers = [
   {
+    icon: 'home',
+    to: '/',
+    title: 'Home'
+  },
+  {
     icon: "accessible",
-    to: "/",
+    to: "/browser",
     title: "Browser"
   },
   {
@@ -60,8 +74,21 @@
     data() {
       return {
         routers,
+        title: 'PP Music',
         drawer: false
       };
+    },
+    computed: {
+      ...mapState({
+        isDarkTheme: state => state.isDarkTheme,
+        toolbarColor: state => {
+          switch (state.searchSource) {
+            case 0: return 'indigo';
+            case 1: return 'red';
+            default: return 'black';
+          }
+        }
+      })
     },
     components: {
     // PlayerBar

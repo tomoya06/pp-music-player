@@ -1,7 +1,7 @@
 <template>
   <v-list three-line>
     <song-item
-    v-for="song in searchedSongs"
+    v-for="song in songs"
     :song="song"
     :key="song.id"
     ></song-item>
@@ -15,12 +15,20 @@
   // import Loading from "@/components/Common/Loading.vue"
 
   export default {
-    name: "search-songs-result-list",
-    computed: {
-      ...mapState({
-        searchedSongs: state => state.browser.searchedResources['song'],
-      })
+    name: "songs-list",
+
+    props: {
+      songs: {
+        type: Array,
+        required: true,
+      }
     },
+
+    // computed: {
+    //   ...mapState({
+    //     searchedSongs: state => state.browser.searchedResources['song'],
+    //   })
+    // },
     components: {
       SongItem,
     }

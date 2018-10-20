@@ -4,7 +4,7 @@
 	>
 	<v-layout row wrap>
 		<artist-item
-		v-for="artist in searchedArtists"
+		v-for="artist in artists"
 		:artist="artist"
 		:key="artist.id"
 		></artist-item>
@@ -19,13 +19,19 @@ import ArtistItem from '@/components/Common/ArtistItem.vue'
 
 export default {
 
-  name: 'search-artists-result-list',
+  name: 'artists-list',
 
-  computed: {
-  	...mapState({
-  		searchedArtists: state => state.browser.searchedResources['artist'],
-  	})
+  props: {
+  	artists: {
+  		type: Array,
+  		required: true,
+  	}
   },
+  // computed: {
+  // 	...mapState({
+  // 		searchedArtists: state => state.browser.searchedResources['artist'],
+  // 	})
+  // },
 
   components: {
   	ArtistItem

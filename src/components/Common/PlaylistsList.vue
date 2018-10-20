@@ -2,7 +2,7 @@
 	<v-container fluid>
 	<v-layout row wrap>
 		<playlist-item
-		v-for="playlist in searchedPlaylists"
+		v-for="playlist in playlists"
 		:playlist="playlist"
 		:key="playlist.id"
 		></playlist-item>
@@ -17,13 +17,19 @@
 
 	export default {
 
-		name: 'search-playlists-result-list',
+		name: 'playlists-list',
 
-		computed: {
-			...mapState({
-				searchedPlaylists: state => state.browser.searchedResources['playlist'],
-			})
+		props: {
+			playlists: {
+				type: Array,
+				required: true,
+			}
 		},
+		// computed: {
+		// 	...mapState({
+		// 		searchedPlaylists: state => state.browser.searchedResources['playlist'],
+		// 	})
+		// },
 
 		components: {
 			PlaylistItem,
