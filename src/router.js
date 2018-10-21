@@ -19,12 +19,12 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: home,
+      component: home
     },
     {
       path: '/browser',
       name: 'browser',
-      component: browser,
+      component: browser
     },
     {
       path: '/collection',
@@ -42,11 +42,11 @@ export default new Router({
       children: [{
         path: 'album/:id',
         name: 'albumDetails',
-        component: albumDetails,
+        component: albumDetails
       }, {
         path: 'artist/:id',
         name: 'artistDetails',
-        component: artistDetails,
+        component: artistDetails
       }]
     }
   ]
